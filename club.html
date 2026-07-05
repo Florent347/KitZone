@@ -42,7 +42,9 @@
 
       document.getElementById("clubHead").innerHTML = `
     <div class="season-header">
-      <div class="crest-lg">${window.renderLogo("club", club)}</div>
+      <div class="crest-lg">
+  ${window.renderLogo("club", club.id, `${club.name} logo`)}
+</div>
       <div>
         <h1>${club.name}</h1>
         <div class="meta">${club.league} · Latest kits available</div>

@@ -663,31 +663,20 @@ window.logoFiles = {
 };
 
 window.getLogoImage = function (kind, id) {
-  if (kind === "clubs") kind = "club";
-  if (kind === "nt" || kind === "national" || kind === "nations")
-    kind = "country";
+  if (kind === "nt") kind = "country";
 
-  const file = window.logoFiles?.[kind]?.[id];
+  const file = window.logoFiles[kind]?.[id];
   if (!file) return null;
 
   return `assets/logos/${kind}/${file}`;
 };
 
 window.renderLogo = function (kind, id, altText) {
-  if (kind === "clubs") kind = "club";
-  if (kind === "nt" || kind === "national" || kind === "nations")
-    kind = "country";
+  const logoPath = window.getLogoImage(kind, id);
 
-  const src = window.getLogoImage(kind, id);
-
-  if (!src) {
-    const item = kind === "club" ? window.findClub(id) : window.findCountry(id);
-    return window.crestSVG(
-      item?.abbr || "?",
-      item?.c1 || "#111",
-      item?.c2 || "#000",
-    );
+  if (!logoPath) {
+    return `<span style="color:red;font-weight:900">LOGO ERROR: ${kind} / ${id}</span>`;
   }
 
-  return `<img class="team-logo-img" src="${src}" alt="${altText || "Team logo"}">`;
+  return `<img class="team-logo-img" src="${logoPath}" alt="${altText || "Team logo"}">`;
 };
