@@ -1,8 +1,7 @@
 /* ============================================================
-   KitZone – Static data (clubs, national teams, jerseys)
+   KitZone – Static data
    ============================================================ */
 
-// Reusable SVG jersey template (color scheme via params)
 window.jerseySVG = function (primary, secondary, accent, sleeve) {
   sleeve = sleeve || primary;
   accent = accent || "#ffffff";
@@ -21,7 +20,6 @@ window.jerseySVG = function (primary, secondary, accent, sleeve) {
   </svg>`;
 };
 
-// Crest SVG generator
 window.crestSVG = function (label, color1, color2) {
   return `
   <svg viewBox="0 0 100 110" xmlns="http://www.w3.org/2000/svg">
@@ -222,29 +220,14 @@ window.nationalTeams = [
   },
 ];
 
-// Club seasons 2009/10 .. 2026/27
-window.clubSeasons = (function () {
-  const out = [];
-  for (let y = 2026; y >= 2009; y--) out.push(`${y}/${String(y + 1).slice(2)}`);
-  return out;
-})();
+window.clubSeasons = ["2026/27", "2025/26"];
+window.countryYears = [2026];
 
-// Country years
-window.countryYears = [2026, 2024, 2022, 2021, 2020, 2018, 2016];
-
-// Helpers
 window.findClub = (id) => window.clubs.find((c) => c.id === id);
 window.findCountry = (id) => window.nationalTeams.find((c) => c.id === id);
 
-// Price rule: newest = 99, older cheaper
-window.priceForYear = function (yearNum) {
-  const now = 2026;
-  const diff = Math.max(0, now - yearNum);
-  return Math.max(49, 99 - diff * 2);
-};
-
 /* ============================================================
-   KitZone – Real jersey image mapping
+   Image mapping
    ============================================================ */
 
 window.clubImageIds = {
@@ -274,23 +257,14 @@ window.countryImageIds = {
 };
 
 window.getJerseyImage = function (kind, id, season, type) {
-  const typeMap = {
-    Home: "h",
-    Away: "a",
-    Third: "3",
-  };
-
+  const typeMap = { Home: "h", Away: "a", Third: "3" };
   const typeCode = typeMap[type];
 
   if (kind === "club") {
     const team = window.clubImageIds[id];
     const year = season && season.startsWith("2026") ? "2026" : "2025";
 
-    // Für 2026/27 gibt es aktuell nur Home.
-    // Away und Third bleiben professionell als Coming Soon.
-    if (year === "2026" && type !== "Home") {
-      return null;
-    }
+    if (year === "2026" && type !== "Home") return null;
 
     const fileBase = `${team}-${typeCode}-${year}`;
 
@@ -301,7 +275,6 @@ window.getJerseyImage = function (kind, id, season, type) {
     };
 
     const ext = customExtensions[fileBase] || "webp";
-
     return `assets/jerseys/club/${fileBase}.${ext}`;
   }
 
@@ -309,7 +282,13 @@ window.getJerseyImage = function (kind, id, season, type) {
     const team = window.countryImageIds[id];
     const fileBase = `${team}-${typeCode}-2026`;
 
-    return `assets/jerseys/country/${fileBase}.webp`;
+    const customExtensions = {
+      // Falls später ein Nationalteam-Bild nicht webp ist, hier ergänzen.
+      // Beispiel: "portugal-h-2026": "avif"
+    };
+
+    const ext = customExtensions[fileBase] || "webp";
+    return `assets/jerseys/country/${fileBase}.${ext}`;
   }
 
   return null;
@@ -330,4 +309,274 @@ window.renderJerseyImage = function (kind, id, season, type, altText) {
 
   return `<img class="real-jersey-img" src="${imagePath}" alt="${altText || "Football jersey"}">`;
 };
-s;
+
+/* ============================================================
+   Official prices with original currencies
+   ============================================================ */
+
+window.clubPrices = {
+  chelsea: {
+    "2025/26": {
+      Home: { value: 115, currency: "USD" },
+      Away: { value: 113, currency: "USD" },
+      Third: { value: 115, currency: "USD" },
+    },
+    "2026/27": {
+      Home: { value: 121, currency: "USD" },
+    },
+  },
+
+  real: {
+    "2025/26": {
+      Home: { value: 110, currency: "CHF" },
+      Away: { value: 110, currency: "CHF" },
+      Third: { value: 110, currency: "CHF" },
+    },
+    "2026/27": {
+      Home: { value: 110, currency: "CHF" },
+    },
+  },
+
+  barca: {
+    "2025/26": {
+      Home: { value: 115, currency: "CHF" },
+      Away: { value: 115, currency: "CHF" },
+      Third: { value: 115, currency: "CHF" },
+    },
+    "2026/27": {
+      Home: { value: 115, currency: "CHF" },
+    },
+  },
+
+  mancity: {
+    "2025/26": {
+      Home: { value: 100, currency: "EUR" },
+      Away: { value: 100, currency: "EUR" },
+      Third: { value: 100, currency: "EUR" },
+    },
+    "2026/27": {
+      Home: { value: 100, currency: "EUR" },
+    },
+  },
+
+  liverpool: {
+    "2025/26": {
+      Home: { value: 85, currency: "GBP" },
+      Away: { value: 85, currency: "GBP" },
+      Third: { value: 85, currency: "GBP" },
+    },
+    "2026/27": {
+      Home: { value: 85, currency: "GBP" },
+    },
+  },
+
+  bayern: {
+    "2025/26": {
+      Home: { value: 100, currency: "EUR" },
+      Away: { value: 100, currency: "EUR" },
+      Third: { value: 100, currency: "EUR" },
+    },
+    "2026/27": {
+      Home: { value: 100, currency: "EUR" },
+    },
+  },
+
+  psg: {
+    "2025/26": {
+      Home: { value: 115, currency: "USD" },
+      Away: { value: 115, currency: "USD" },
+      Third: { value: 115, currency: "USD" },
+    },
+    "2026/27": {
+      Home: { value: 126, currency: "USD" },
+    },
+  },
+
+  juventus: {
+    "2025/26": {
+      Home: { value: 100, currency: "EUR" },
+      Away: { value: 100, currency: "EUR" },
+      Third: { value: 100, currency: "EUR" },
+    },
+    "2026/27": {
+      Home: { value: 110, currency: "CHF" },
+    },
+  },
+
+  inter: {
+    "2025/26": {
+      Home: { value: 84.26, currency: "GBP" },
+      Away: { value: 84.26, currency: "GBP" },
+      Third: { value: 84.05, currency: "GBP" },
+    },
+    "2026/27": {
+      Home: { value: 92.45, currency: "GBP" },
+    },
+  },
+
+  dortmund: {
+    "2025/26": {
+      Home: { value: 100, currency: "EUR" },
+      Away: { value: 100, currency: "EUR" },
+      Third: { value: 100, currency: "EUR" },
+    },
+    "2026/27": {
+      Home: { value: 100, currency: "EUR" },
+    },
+  },
+};
+
+window.countryPrices = {
+  portugal: {
+    Home: { value: 125, currency: "CHF" },
+    Away: { value: 125, currency: "CHF" },
+  },
+  argentina: {
+    Home: { value: 110, currency: "CHF" },
+    Away: { value: 110, currency: "CHF" },
+  },
+  brazil: {
+    Home: { value: 125, currency: "CHF" },
+    Away: { value: 125, currency: "CHF" },
+  },
+  france: {
+    Home: { value: 125, currency: "CHF" },
+    Away: { value: 125, currency: "CHF" },
+  },
+  england: {
+    Home: { value: 125, currency: "CHF" },
+    Away: { value: 125, currency: "CHF" },
+  },
+  germany: {
+    Home: { value: 110, currency: "CHF" },
+    Away: { value: 110, currency: "CHF" },
+  },
+  spain: {
+    Home: { value: 110, currency: "CHF" },
+    Away: { value: 110, currency: "CHF" },
+  },
+  switzerland: {
+    Home: { value: 110, currency: "CHF" },
+    Away: { value: 110, currency: "CHF" },
+  },
+  italy: {
+    Home: { value: 110, currency: "CHF" },
+    Away: { value: 110, currency: "CHF" },
+  },
+  netherlands: {
+    Home: { value: 125, currency: "CHF" },
+    Away: { value: 125, currency: "CHF" },
+  },
+};
+
+window.getJerseyPrice = function (kind, id, season, type) {
+  if (kind === "club") {
+    return (
+      window.clubPrices?.[id]?.[season]?.[type] || {
+        value: 95,
+        currency: "CHF",
+      }
+    );
+  }
+
+  return window.countryPrices?.[id]?.[type] || { value: 110, currency: "CHF" };
+};
+
+/* ============================================================
+   Manufacturers
+   ============================================================ */
+
+window.manufacturers = {
+  club: {
+    chelsea: "Nike",
+    real: "adidas",
+    barca: "Nike",
+    mancity: "Puma",
+    liverpool: "adidas",
+    bayern: "adidas",
+    psg: "Nike",
+    juventus: "adidas",
+    inter: "Nike",
+    dortmund: "Puma",
+  },
+
+  country: {
+    portugal: "Puma",
+    argentina: "adidas",
+    brazil: "Nike",
+    france: "Nike",
+    england: "Nike",
+    germany: "adidas",
+    spain: "adidas",
+    switzerland: "Puma",
+    italy: "adidas",
+    netherlands: "Nike",
+  },
+};
+
+window.getManufacturer = function (kind, id) {
+  return window.manufacturers?.[kind]?.[id] || "Unknown";
+};
+
+/* ============================================================
+   Currency switcher
+   Base conversion: all values converted through CHF
+   ============================================================ */
+
+window.exchangeRatesToCHF = {
+  CHF: 1,
+  USD: 0.89,
+  EUR: 0.93,
+  GBP: 1.08,
+  ILS: 0.27,
+  JPY: 0.0057,
+};
+
+window.currencySymbols = {
+  CHF: "CHF",
+  USD: "$",
+  EUR: "€",
+  GBP: "£",
+  ILS: "₪",
+  JPY: "¥",
+};
+
+window.getSelectedCurrency = function () {
+  return localStorage.getItem("kz_currency") || "CHF";
+};
+
+window.setSelectedCurrency = function (currency) {
+  localStorage.setItem("kz_currency", currency);
+  location.reload();
+};
+
+window.convertPrice = function (priceObj) {
+  const selected = window.getSelectedCurrency();
+  const fromRate = window.exchangeRatesToCHF[priceObj.currency] || 1;
+  const toRate = window.exchangeRatesToCHF[selected] || 1;
+
+  const priceInCHF = priceObj.value * fromRate;
+  return priceInCHF / toRate;
+};
+
+window.formatPrice = function (priceObj) {
+  const selected = window.getSelectedCurrency();
+  const converted = window.convertPrice(priceObj);
+  const symbol = window.currencySymbols[selected];
+
+  if (selected === "JPY") return `${symbol}${Math.round(converted)}`;
+  if (selected === "CHF") return `CHF ${converted.toFixed(2)}`;
+
+  return `${symbol}${converted.toFixed(2)}`;
+};
+
+window.formatConvertedNumber = function (numberInSelectedCurrency) {
+  const selected = window.getSelectedCurrency();
+  const symbol = window.currencySymbols[selected];
+
+  if (selected === "JPY")
+    return `${symbol}${Math.round(numberInSelectedCurrency)}`;
+  if (selected === "CHF") return `CHF ${numberInSelectedCurrency.toFixed(2)}`;
+
+  return `${symbol}${numberInSelectedCurrency.toFixed(2)}`;
+};
