@@ -14,7 +14,7 @@
   <div class="container">
     <div class="eyebrow">Clubs</div>
     <h1>Choose your club</h1>
-    <p>Ten of the world's biggest football clubs. Every season kit, from 2009/10 to 2026/27.</p>
+    <p>Ten of the world's biggest football clubs. Latest official kits from 2025/26 and 2026/27.</p>
     <div class="filter-bar">
       <div class="relative">
         <input type="text" id="clubSearch" placeholder="Search clubs…" autocomplete="off"/>
@@ -61,7 +61,7 @@
     if (!list.length) { grid.innerHTML = `<div style="grid-column:1/-1;color:var(--muted);padding:40px 0">No clubs match your search.</div>`; return; }
     grid.innerHTML = list.map(c => `
       <a class="card reveal in" href="club.html?id=${c.id}">
-        <div class="crest">${window.crestSVG(c.abbr, c.c1, c.c2)}</div>
+        <div class="crest">${window.renderLogo("club", c)}</div>
         <h3>${c.name}</h3>
         <div class="meta">${c.league}</div>
         <div class="link">Browse Jerseys →</div>

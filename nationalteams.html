@@ -14,7 +14,7 @@
   <div class="container">
     <div class="eyebrow">National Teams</div>
     <h1>Wear your colours</h1>
-    <p>Ten nations. Every major tournament kit from 2016 to 2026.</p>
+    <p>Ten nations. Official 2026 home and away kits.</p>
     <div class="filter-bar">
       <div class="relative">
         <input type="text" id="ntSearch" placeholder="Search national teams…" autocomplete="off"/>
@@ -44,7 +44,7 @@
     if (!list.length) { grid.innerHTML = `<div style="grid-column:1/-1;color:var(--muted);padding:40px 0">No teams match your search.</div>`; return; }
     grid.innerHTML = list.map(c => `
       <a class="card reveal in" href="country.html?id=${c.id}">
-        <div class="crest">${window.crestSVG(c.abbr, c.c1, c.c2)}</div>
+        <div class="crest">${window.renderLogo("country", c)}</div>
         <h3>${c.name}</h3>
         <div class="meta">${c.continent}</div>
         <div class="link">Browse Jerseys →</div>

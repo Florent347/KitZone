@@ -46,7 +46,7 @@
 
       document.getElementById("ctryHead").innerHTML = `
     <div class="season-header">
-      <div class="crest-lg">${window.crestSVG(country.abbr, country.c1, country.c2)}</div>
+      <div class="crest-lg">${window.renderLogo("country", country)}</div>
       <div>
         <h1>${country.name}</h1>
         <div class="meta">${country.continent} · National Team</div>

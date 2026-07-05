@@ -257,6 +257,62 @@ window.countryImageIds = {
   netherlands: "netherlands",
 };
 
+/* ============================================================
+   Logo mapping
+   ============================================================ */
+
+window.clubLogoFiles = {
+  chelsea: "chelsea.webp",
+  real: "madrid.png",
+  barca: "barcelona.png",
+  mancity: "city.png",
+  liverpool: "liverpool.png",
+  bayern: "bayern.png",
+  psg: "psg.png",
+  juventus: "juventus.png",
+  inter: "inter.png",
+  dortmund: "dortmund.png",
+};
+
+window.countryLogoFiles = {
+  portugal: "portugal.png",
+  argentina: "argentina.png",
+  brazil: "brazil.png",
+  france: "france.png",
+  england: "england.png",
+  germany: "germany.png",
+  spain: "spain.png",
+  switzerland: "swiss.png",
+  italy: "italy.png",
+  netherlands: "netherlands.png",
+};
+
+window.getLogoImage = function (kind, id) {
+  if (kind === "club") {
+    const file = window.clubLogoFiles[id];
+    return file ? `assets/logos/club/${file}` : null;
+  }
+
+  if (kind === "country") {
+    const file = window.countryLogoFiles[id];
+    return file ? `assets/logos/country/${file}` : null;
+  }
+
+  return null;
+};
+
+window.renderLogo = function (kind, item) {
+  const logoPath = window.getLogoImage(kind, item.id);
+  const fallback = window.crestSVG(item.abbr, item.c1, item.c2);
+
+  if (!logoPath) return fallback;
+
+  return `
+    <img class="team-logo-img" src="${logoPath}" alt="${item.name} logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+    <span class="logo-fallback" style="display:none">${fallback}</span>
+  `;
+};
+
 window.getJerseyImage = function (kind, id, season, type) {
   const typeMap = {
     Home: "h",

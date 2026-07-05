@@ -1,180 +1,126 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Product — KitZone</title>
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
-  <body>
-    <header class="header" data-header></header>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Product — KitZone</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="header" data-header></header>
 
-    <section class="container">
-      <a
-        href="#"
-        onclick="
-          history.back();
-          return false;
-        "
-        class="back-link"
-        style="margin-top: 24px; display: inline-flex"
-        >← Back</a
-      >
-      <div class="product-layout" id="productLayout"></div>
-    </section>
+  <section class="container">
+    <a href="#" onclick="history.back(); return false;" class="back-link" style="margin-top: 24px; display: inline-flex">← Back</a>
+    <div class="product-layout" id="productLayout"></div>
+  </section>
 
-    <footer class="footer" data-footer></footer>
+  <footer class="footer" data-footer></footer>
 
-    <script src="js/data.js"></script>
-    <script src="js/app.js"></script>
-    <script>
-      let kind = window.qp("kind") || "club";
-      if (kind === "nt") kind = "country";
-      const id = window.qp("id");
-      const season = window.qp("season");
-      const type = window.qp("type") || "Home";
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    let kind = window.qp("kind") || "club";
+    if (kind === "nt") kind = "country";
 
-      const src =
-        kind === "club" ? window.findClub(id) : window.findCountry(id);
-      if (!src) location.href = "index.html";
+    const id = window.qp("id");
+    const season = window.qp("season");
+    const type = window.qp("type") || "Home";
+    const src = kind === "club" ? window.findClub(id) : window.findCountry(id);
 
-      const imagePath = window.getJerseyImage(kind, id, season, type);
+    if (!src) location.href = "index.html";
 
-      if (!imagePath) {
-        document.getElementById("productLayout").innerHTML = `
-      <div class="product-gallery">
-        <div class="product-main-img">
-          ${window.renderJerseyImage(kind, id, season, type)}
+    const imagePath = window.getJerseyImage(kind, id, season, type);
+    const price = window.getJerseyPrice(kind, id, season, type);
+    const manufacturer = window.getManufacturer(kind, id);
+
+    document.title = `${src.name} ${type} ${season} — KitZone`;
+
+    if (!imagePath) {
+      document.getElementById("productLayout").innerHTML = `
+        <div class="product-gallery">
+          <div class="product-main-img">${window.renderJerseyImage(kind, id, season, type)}</div>
         </div>
-      </div>
-      <div class="product-info">
-        <div class="eyebrow">Coming Soon</div>
-        <h1>${src.name} ${type}</h1>
-        <div class="team">${kind === "club" ? "Season" : "Year"} ${season}</div>
-        <p style="color:var(--muted);margin:20px 0">
-          This official kit has not been released yet.
-        </p>
-        <button class="btn btn-ghost btn-lg" onclick="history.back()">Back</button>
-      </div>
-    `;
-      } else {
-        const price = window.getJerseyPrice(kind, id, season, type);
-        const manufacturer = window.getManufacturer(kind, id);
-
-        document.title = `${src.name} ${type} ${season} — KitZone`;
-
-        document.getElementById("productLayout").innerHTML = `
-      <div class="product-gallery">
-        <div class="product-main-img" id="mainImg">
-          <img class="real-jersey-img" src="${imagePath}" alt="${src.name} ${type} ${season}">
-        </div>
-
-        <div class="product-thumbs">
-          <div class="product-thumb active">
-            <img class="real-jersey-img" src="${imagePath}" alt="${src.name} ${type} ${season}">
+        <div class="product-info">
+          <div class="eyebrow">Coming Soon</div>
+          <h1>${src.name} ${type}</h1>
+          <div class="team">${kind === "club" ? "Season" : "Year"} ${season}</div>
+          <p style="color: var(--muted); margin: 20px 0">This official kit has not been released yet.</p>
+          <div class="product-attrs">
+            <div class="attr-box"><div class="k">${kind === "club" ? "Club" : "Nation"}</div><div class="v">${src.name}</div></div>
+            <div class="attr-box"><div class="k">${kind === "club" ? "Season" : "Year"}</div><div class="v">${season}</div></div>
+            <div class="attr-box"><div class="k">Kit</div><div class="v">${type}</div></div>
+            <div class="attr-box"><div class="k">Manufacturer</div><div class="v">${manufacturer}</div></div>
           </div>
-          <div class="product-thumb video" title="Product video"></div>
-        </div>
-      </div>
-
-      <div class="product-info">
-        <div class="eyebrow">${kind === "club" ? src.league : src.continent}</div>
-        <h1>${src.name} ${type}</h1>
-        <div class="team">${kind === "club" ? "Season" : "Year"} ${season}</div>
-        <div class="price-lg">${window.formatPrice(price)}</div>
-        <div class="avail">In stock — ships in 24h</div>
-
-        <div class="product-attrs">
-          <div class="attr-box"><div class="k">${kind === "club" ? "Club" : "Nation"}</div><div class="v">${src.name}</div></div>
-          <div class="attr-box"><div class="k">${kind === "club" ? "Season" : "Year"}</div><div class="v">${season}</div></div>
-          <div class="attr-box"><div class="k">Kit</div><div class="v">${type}</div></div>
-          <div class="attr-box"><div class="k">Manufacturer</div><div class="v">${manufacturer}</div></div>
-        </div>
-
-        <div class="field-label">Select size</div>
-        <div class="size-picker">
-          ${["S", "M", "L", "XL", "XXL"]
-            .map(
-              (s, i) => `
-            <label><input type="radio" name="size" value="${s}" ${i === 1 ? "checked" : ""}/><span>${s}</span></label>
-          `,
-            )
-            .join("")}
-        </div>
-
-        <div class="field-label">Personalisation</div>
-        <div class="perso-options">
-          <label><input type="radio" name="perso" value="none" checked/><span>Without name & number</span></label>
-          <label><input type="radio" name="perso" value="custom"/><span>With name & number</span></label>
-        </div>
-
-        <div class="perso-fields" id="persoFields">
-          <input type="text" id="persoName" placeholder="Name (e.g. PALMER)" maxlength="12"/>
-          <input type="number" id="persoNum" placeholder="Number" min="1" max="99"/>
-        </div>
-
-        <div class="product-actions">
-          <button class="btn btn-primary btn-lg" id="addBtn">Add to Cart</button>
           <button class="btn btn-ghost btn-lg" onclick="history.back()">Back</button>
+        </div>`;
+    } else {
+      document.getElementById("productLayout").innerHTML = `
+        <div class="product-gallery">
+          <div class="product-main-img" id="mainImg"><img class="real-jersey-img" src="${imagePath}" alt="${src.name} ${type} ${season}" /></div>
+          <div class="product-thumbs">
+            <div class="product-thumb active"><img class="real-jersey-img" src="${imagePath}" alt="${src.name} ${type} ${season}" /></div>
+            <div class="product-thumb video" title="Product video"></div>
+          </div>
         </div>
-      </div>
-    `;
+        <div class="product-info">
+          <div class="eyebrow">${kind === "club" ? src.league : src.continent}</div>
+          <h1>${src.name} ${type}</h1>
+          <div class="team">${kind === "club" ? "Season" : "Year"} ${season}</div>
+          <div class="price-lg">${window.formatPrice(price)}</div>
+          <div class="avail">In stock — ships in 24h</div>
+          <div class="product-attrs">
+            <div class="attr-box"><div class="k">${kind === "club" ? "Club" : "Nation"}</div><div class="v">${src.name}</div></div>
+            <div class="attr-box"><div class="k">${kind === "club" ? "Season" : "Year"}</div><div class="v">${season}</div></div>
+            <div class="attr-box"><div class="k">Kit</div><div class="v">${type}</div></div>
+            <div class="attr-box"><div class="k">Manufacturer</div><div class="v">${manufacturer}</div></div>
+          </div>
+          <div class="field-label">Select size</div>
+          <div class="size-picker">
+            ${["S", "M", "L", "XL", "XXL"].map((s, i) => `<label><input type="radio" name="size" value="${s}" ${i === 1 ? "checked" : ""}/><span>${s}</span></label>`).join("")}
+          </div>
+          <div class="field-label">Personalisation</div>
+          <div class="perso-options">
+            <label><input type="radio" name="perso" value="none" checked /><span>Without name & number</span></label>
+            <label><input type="radio" name="perso" value="custom" /><span>With name & number</span></label>
+          </div>
+          <div class="perso-fields" id="persoFields">
+            <input type="text" id="persoName" placeholder="Name (e.g. PALMER)" maxlength="12" />
+            <input type="number" id="persoNum" placeholder="Number" min="1" max="99" />
+          </div>
+          <div class="product-actions">
+            <button class="btn btn-primary btn-lg" id="addBtn">Add to Cart</button>
+            <button class="btn btn-ghost btn-lg" onclick="history.back()">Back</button>
+          </div>
+        </div>`;
 
-        document.querySelectorAll('input[name="perso"]').forEach((r) => {
-          r.addEventListener("change", (e) => {
-            document
-              .getElementById("persoFields")
-              .classList.toggle("show", e.target.value === "custom");
-          });
+      document.querySelectorAll('input[name="perso"]').forEach((radio) => {
+        radio.addEventListener("change", (event) => {
+          document.getElementById("persoFields").classList.toggle("show", event.target.value === "custom");
         });
+      });
 
-        document.getElementById("addBtn").addEventListener("click", () => {
-          const size = document.querySelector(
-            'input[name="size"]:checked',
-          ).value;
-          const perso = document.querySelector(
-            'input[name="perso"]:checked',
-          ).value;
+      document.getElementById("addBtn").addEventListener("click", () => {
+        const size = document.querySelector('input[name="size"]:checked').value;
+        const perso = document.querySelector('input[name="perso"]:checked').value;
+        let persoData = null;
 
-          let persoData = null;
+        if (perso === "custom") {
+          const name = document.getElementById("persoName").value.trim();
+          const number = document.getElementById("persoNum").value.trim();
+          if (!name || !number) { window.showToast("Enter name and number"); return; }
+          persoData = { name: name.toUpperCase(), number };
+        }
 
-          if (perso === "custom") {
-            const n = document.getElementById("persoName").value.trim();
-            const num = document.getElementById("persoNum").value.trim();
-
-            if (!n || !num) {
-              window.showToast("Enter name and number");
-              return;
-            }
-
-            persoData = {
-              name: n.toUpperCase(),
-              number: num,
-            };
-          }
-
-          const cart = getCart();
-
-          const item = {
-            id: `${kind}-${id}-${season}-${type}-${size}-${Date.now()}`,
-            kind,
-            teamId: id,
-            teamName: src.name,
-            season,
-            type,
-            size,
-            perso: persoData,
-            price,
-            manufacturer,
-            image: imagePath,
-            qty: 1,
-          };
-
-          cart.push(item);
-          saveCart(cart);
-          window.showToast("Added to cart ✓");
+        const cart = getCart();
+        cart.push({
+          id: `${kind}-${id}-${season}-${type}-${size}-${Date.now()}`,
+          kind, teamId: id, teamName: src.name, season, type, size,
+          perso: persoData, price, image: imagePath, manufacturer, qty: 1,
         });
-      }
-    </script>
-  </body>
+        saveCart(cart);
+        window.showToast("Added to cart ✓");
+      });
+    }
+  </script>
+</body>
 </html>
