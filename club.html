@@ -33,7 +33,10 @@
     <script>
       const id = window.qp("id") || "chelsea";
       const club = window.findClub(id);
-      if (!club) location.href = "clubs.html";
+
+      if (!club) {
+        location.href = "clubs.html";
+      }
 
       document.title = `${club.name} — KitZone`;
 
@@ -47,38 +50,38 @@
     </div>
   `;
 
-      const shownSeasons = ["2026/27", "2025/26"];
-
-      document.getElementById("seasonRows").innerHTML = shownSeasons
+      document.getElementById("seasonRows").innerHTML = window.clubSeasons
         .map((s) => {
-          const yearNum = parseInt(s);
-          const price = window.priceForYear(yearNum);
-
           const cell = (type) => {
             const imagePath = window.getJerseyImage("club", club.id, s, type);
             const isComingSoon = !imagePath;
+            const price = window.getJerseyPrice("club", club.id, s, type);
 
             return `
-        <a class="jersey-cell ${isComingSoon ? "disabled-link" : ""}" 
-           href="${isComingSoon ? "#" : window.jerseyUrl("club", club.id, s, type)}"
-           ${isComingSoon ? 'onclick="return false;"' : ""}>
-          <div class="thumb">
-            ${window.renderJerseyImage("club", club.id, s, type, `${club.name} ${type} ${s}`)}
-          </div>
-          <div class="label">${type}</div>
-          <div class="price">${isComingSoon ? "Coming Soon" : `CHF ${price}.90`}</div>
-        </a>
-      `;
+          <a 
+            class="jersey-cell ${isComingSoon ? "disabled-link" : ""}" 
+            href="${isComingSoon ? "#" : window.jerseyUrl("club", club.id, s, type)}"
+            ${isComingSoon ? 'onclick="return false;"' : ""}
+          >
+            <div class="thumb">
+              ${window.renderJerseyImage("club", club.id, s, type, `${club.name} ${type} ${s}`)}
+            </div>
+            <div class="label">${type}</div>
+            <div class="price">
+              ${isComingSoon ? "Coming Soon" : window.formatPrice(price)}
+            </div>
+          </a>
+        `;
           };
 
           return `
-      <div class="jersey-table-row">
-        <div class="season-label">${s}</div>
-        ${cell("Home")}
-        ${cell("Away")}
-        ${cell("Third")}
-      </div>
-    `;
+        <div class="jersey-table-row">
+          <div class="season-label">${s}</div>
+          ${cell("Home")}
+          ${cell("Away")}
+          ${cell("Third")}
+        </div>
+      `;
         })
         .join("");
     </script>

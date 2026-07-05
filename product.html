@@ -28,7 +28,8 @@
     <script src="js/data.js"></script>
     <script src="js/app.js"></script>
     <script>
-      const kind = window.qp("kind") || "club";
+      let kind = window.qp("kind") || "club";
+      if (kind === "nt") kind = "country";
       const id = window.qp("id");
       const season = window.qp("season");
       const type = window.qp("type") || "Home";
@@ -57,11 +58,8 @@
       </div>
     `;
       } else {
-        const yearNum = parseInt(season);
-        const price = window.priceForYear(yearNum);
-        const manufacturer = ["Nike", "Adidas", "Puma", "Castore"][
-          Math.abs((id || "x").charCodeAt(0)) % 4
-        ];
+        const price = window.getJerseyPrice(kind, id, season, type);
+        const manufacturer = window.getManufacturer(kind, id);
 
         document.title = `${src.name} ${type} ${season} — KitZone`;
 
@@ -83,7 +81,7 @@
         <div class="eyebrow">${kind === "club" ? src.league : src.continent}</div>
         <h1>${src.name} ${type}</h1>
         <div class="team">${kind === "club" ? "Season" : "Year"} ${season}</div>
-        <div class="price-lg">CHF ${price}.90</div>
+        <div class="price-lg">${window.formatPrice(price)}</div>
         <div class="avail">In stock — ships in 24h</div>
 
         <div class="product-attrs">
@@ -167,6 +165,7 @@
             size,
             perso: persoData,
             price,
+            manufacturer,
             image: imagePath,
             qty: 1,
           };

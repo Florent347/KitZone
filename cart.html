@@ -27,8 +27,12 @@
     <script>
       const wrap = document.getElementById("cartWrap");
 
+      function cartItemTotalInSelectedCurrency(item) {
+        return window.convertPrice(item.price) * (item.qty || 1);
+      }
+
       function render() {
-        let cart = getCart();
+        const cart = getCart();
 
         if (!cart.length) {
           wrap.innerHTML = `
@@ -47,7 +51,10 @@
           return;
         }
 
-        const subtotal = cart.reduce((s, i) => s + i.price * (i.qty || 1), 0);
+        const subtotal = cart.reduce(
+          (sum, item) => sum + cartItemTotalInSelectedCurrency(item),
+          0,
+        );
         const shipping = subtotal > 150 ? 0 : 9.9;
         const total = subtotal + shipping;
 
@@ -56,69 +63,97 @@
         <div class="cart-items">
           ${cart
             .map(
-              (i, idx) => `
-            <div class="cart-item">
-              <div class="img">
-                <img class="real-jersey-img" src="${i.image}" alt="${i.teamName} ${i.type}">
-              </div>
-
-              <div>
-                <h4>${i.teamName} — ${i.type}</h4>
-                <div class="sub">${i.kind === "club" ? "Season" : "Year"} ${i.season}</div>
-
-                <div class="details">
-                  <span>Size ${i.size}</span>
-                  ${i.perso ? `<span>${i.perso.name} #${i.perso.number}</span>` : `<span>No personalisation</span>`}
-                </div>
-              </div>
-
-              <div class="right">
-                <div class="qty">
-                  <button data-act="dec" data-idx="${idx}">−</button>
-                  <span>${i.qty || 1}</span>
-                  <button data-act="inc" data-idx="${idx}">+</button>
+              (item, idx) => `
+              <div class="cart-item">
+                <div class="img">
+                  <img class="real-jersey-img" src="${item.image}" alt="${item.teamName} ${item.type}">
                 </div>
 
-                <div style="font-weight:800;color:var(--gold)">
-                  CHF ${(i.price * (i.qty || 1)).toFixed(2)}
+                <div>
+                  <h4>${item.teamName} — ${item.type}</h4>
+                  <div class="sub">${item.kind === "club" ? "Season" : "Year"} ${item.season}</div>
+
+                  <div class="details">
+                    <span>Size ${item.size}</span>
+                    ${
+                      item.perso
+                        ? `<span>${item.perso.name} #${item.perso.number}</span>`
+                        : `<span>No personalisation</span>`
+                    }
+                    <span>${item.manufacturer || ""}</span>
+                  </div>
                 </div>
 
-                <button class="remove" data-act="rm" data-idx="${idx}">Remove</button>
+                <div class="right">
+                  <div class="qty">
+                    <button data-act="dec" data-idx="${idx}">−</button>
+                    <span>${item.qty || 1}</span>
+                    <button data-act="inc" data-idx="${idx}">+</button>
+                  </div>
+
+                  <div style="font-weight:800;color:var(--gold)">
+                    ${window.formatConvertedNumber(cartItemTotalInSelectedCurrency(item))}
+                  </div>
+
+                  <button class="remove" data-act="rm" data-idx="${idx}">Remove</button>
+                </div>
               </div>
-            </div>
-          `,
+            `,
             )
             .join("")}
         </div>
 
         <div class="cart-summary">
           <h3>Order summary</h3>
-          <div class="summary-row"><span>Subtotal</span><span>CHF ${subtotal.toFixed(2)}</span></div>
-          <div class="summary-row"><span>Shipping</span><span>${shipping ? `CHF ${shipping.toFixed(2)}` : "Free"}</span></div>
-          <div class="summary-row total"><span>Total</span><span>CHF ${total.toFixed(2)}</span></div>
 
-          <button class="btn btn-gold" style="width:100%;margin-top:20px" onclick="alert('This is a demo checkout — thanks for trying KitZone!')">
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span>${window.formatConvertedNumber(subtotal)}</span>
+          </div>
+
+          <div class="summary-row">
+            <span>Shipping</span>
+            <span>${shipping ? window.formatConvertedNumber(shipping) : "Free"}</span>
+          </div>
+
+          <div class="summary-row total">
+            <span>Total</span>
+            <span>${window.formatConvertedNumber(total)}</span>
+          </div>
+
+          <button 
+            class="btn btn-gold" 
+            style="width:100%;margin-top:20px" 
+            onclick="alert('This is a demo checkout — thanks for trying KitZone!')"
+          >
             Checkout
           </button>
 
           <p style="color:var(--muted);font-size:.8rem;text-align:center;margin-top:12px">
-            Free shipping over CHF 150 · 30-day returns
+            Free shipping over ${window.formatConvertedNumber(150)} · 30-day returns
           </p>
         </div>
       </div>
     `;
 
-        wrap.querySelectorAll("[data-act]").forEach((b) => {
-          b.addEventListener("click", () => {
-            const idx = +b.dataset.idx;
-            let c = getCart();
+        wrap.querySelectorAll("[data-act]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const idx = Number(btn.dataset.idx);
+            const cart = getCart();
 
-            if (b.dataset.act === "inc") c[idx].qty = (c[idx].qty || 1) + 1;
-            if (b.dataset.act === "dec")
-              c[idx].qty = Math.max(1, (c[idx].qty || 1) - 1);
-            if (b.dataset.act === "rm") c.splice(idx, 1);
+            if (btn.dataset.act === "inc") {
+              cart[idx].qty = (cart[idx].qty || 1) + 1;
+            }
 
-            saveCart(c);
+            if (btn.dataset.act === "dec") {
+              cart[idx].qty = Math.max(1, (cart[idx].qty || 1) - 1);
+            }
+
+            if (btn.dataset.act === "rm") {
+              cart.splice(idx, 1);
+            }
+
+            saveCart(cart);
             render();
           });
         });

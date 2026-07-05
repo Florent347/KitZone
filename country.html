@@ -37,7 +37,10 @@
     <script>
       const id = window.qp("id") || "portugal";
       const country = window.findCountry(id);
-      if (!country) location.href = "nationalteams.html";
+
+      if (!country) {
+        location.href = "nationalteams.html";
+      }
 
       document.title = `${country.name} — KitZone`;
 
@@ -51,29 +54,34 @@
     </div>
   `;
 
-      const shownYears = [2026];
-
-      document.getElementById("yearRows").innerHTML = shownYears
+      document.getElementById("yearRows").innerHTML = window.countryYears
         .map((y) => {
-          const price = window.priceForYear(y);
+          const cell = (type) => {
+            const price = window.getJerseyPrice(
+              "country",
+              country.id,
+              String(y),
+              type,
+            );
 
-          const cell = (type) => `
-      <a class="jersey-cell" href="${window.jerseyUrl("country", country.id, String(y), type)}">
-        <div class="thumb">
-          ${window.renderJerseyImage("country", country.id, String(y), type, `${country.name} ${type} ${y}`)}
-        </div>
-        <div class="label">${type}</div>
-        <div class="price">CHF ${price}.90</div>
-      </a>
-    `;
+            return `
+          <a class="jersey-cell" href="${window.jerseyUrl("country", country.id, String(y), type)}">
+            <div class="thumb">
+              ${window.renderJerseyImage("country", country.id, String(y), type, `${country.name} ${type} ${y}`)}
+            </div>
+            <div class="label">${type}</div>
+            <div class="price">${window.formatPrice(price)}</div>
+          </a>
+        `;
+          };
 
           return `
-      <div class="jersey-table-row" style="grid-template-columns:130px 1fr 1fr;">
-        <div class="season-label">${y}</div>
-        ${cell("Home")}
-        ${cell("Away")}
-      </div>
-    `;
+        <div class="jersey-table-row" style="grid-template-columns:130px 1fr 1fr;">
+          <div class="season-label">${y}</div>
+          ${cell("Home")}
+          ${cell("Away")}
+        </div>
+      `;
         })
         .join("");
     </script>
