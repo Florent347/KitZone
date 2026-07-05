@@ -255,40 +255,42 @@
         {
           name: "Premier League",
           country: "England",
-          c1: "#3d0053",
-          c2: "#38003c",
+          img: "assets/logos/league/prem.png",
         },
-        { name: "La Liga", country: "Spain", c1: "#ee8707", c2: "#c26900" },
+        {
+          name: "La Liga",
+          country: "Spain",
+          img: "assets/logos/league/laliga.png",
+        },
         {
           name: "Bundesliga",
           country: "Germany",
-          c1: "#d20515",
-          c2: "#8a0018",
+          img: "assets/logos/league/bundesliga.png",
         },
-        { name: "Serie A", country: "Italy", c1: "#008fd7", c2: "#00507d" },
-        { name: "Ligue 1", country: "France", c1: "#091c3e", c2: "#031029" },
+        {
+          name: "Serie A",
+          country: "Italy",
+          img: "assets/logos/league/seriea.png",
+        },
+        {
+          name: "Ligue 1",
+          country: "France",
+          img: "assets/logos/league/ligue1.png",
+        },
       ];
 
       document.getElementById("leagueGrid").innerHTML = leagues
         .map(
           (league) => `
-    <a class="card" href="clubs.html?league=${encodeURIComponent(league.name)}">
-      <div class="crest">
-        ${window.crestSVG(
-          league.name
-            .split(" ")
-            .map((word) => word[0])
-            .join("")
-            .slice(0, 2),
-          league.c1,
-          league.c2,
-        )}
-      </div>
-      <h3>${league.name}</h3>
-      <div class="meta">${league.country}</div>
-      <div class="link">Explore clubs →</div>
-    </a>
-  `,
+      <a class="card" href="clubs.html?league=${encodeURIComponent(league.name)}">
+        <div class="crest">
+          <img class="team-logo-img" src="${league.img}" alt="${league.name} logo">
+        </div>
+        <h3>${league.name}</h3>
+        <div class="meta">${league.country}</div>
+        <div class="link">Explore clubs →</div>
+      </a>
+    `,
         )
         .join("");
 

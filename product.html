@@ -85,16 +85,16 @@
       </div>
         </div>
         <div class="product-info">
-  <div class="product-title-row">
-    <div class="product-logo">
-      ${window.renderLogo(kind, id, `${src.name} logo`)}
-    </div>
+        <div class="product-title-row">
+          <div class="product-logo">
+            ${window.renderLogo(kind, id, `${src.name} logo`)}
+        </div>
 
-    <div>
-      <div class="eyebrow">${kind === "club" ? src.league : src.continent}</div>
-      <h1>${src.name} ${type}</h1>
-    </div>
-  </div>
+      <div>
+        <div class="eyebrow">${kind === "club" ? src.league : src.continent}</div>
+          <h1>${src.name} ${type}</h1>
+        </div>
+      </div>
           <div class="team">${kind === "club" ? "Season" : "Year"} ${season}</div>
           <div class="price-lg">${window.formatPrice(price)}</div>
           <div class="avail">In stock — ships in 24h</div>
