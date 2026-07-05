@@ -638,9 +638,9 @@ window.formatConvertedNumber = function (numberInSelectedCurrency) {
 window.logoFiles = {
   club: {
     chelsea: "chelsea.webp",
-    real: "madrid.webp",
+    real: "madrid.png",
     barca: "barcelona.png",
-    mancity: "city.webp",
+    mancity: "city.png",
     liverpool: "liverpool.png",
     bayern: "bayern.png",
     psg: "psg.png",
@@ -663,14 +663,21 @@ window.logoFiles = {
 };
 
 window.getLogoImage = function (kind, id) {
-  const file = window.logoFiles?.[kind]?.[id];
+  if (kind === "clubs") kind = "club";
+  if (kind === "nt" || kind === "national" || kind === "nations")
+    kind = "country";
 
+  const file = window.logoFiles?.[kind]?.[id];
   if (!file) return null;
 
   return `assets/logos/${kind}/${file}`;
 };
 
 window.renderLogo = function (kind, id, altText) {
+  if (kind === "clubs") kind = "club";
+  if (kind === "nt" || kind === "national" || kind === "nations")
+    kind = "country";
+
   const src = window.getLogoImage(kind, id);
 
   if (!src) {
