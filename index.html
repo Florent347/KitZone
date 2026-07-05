@@ -32,10 +32,10 @@
 
           <div class="hero-stats">
             <div>
-              <strong id="kitCount">60+</strong><span>Official kits</span>
+              <strong id="kitCount">50+</strong><span>Official kits</span>
             </div>
             <div><strong>2</strong><span>Club seasons</span></div>
-            <div><strong>10</strong><span>Top clubs</span></div>
+            <div><strong>10</strong><span>Top clubs & nations each</span></div>
           </div>
         </div>
 
@@ -149,12 +149,7 @@
     <script src="js/app.js"></script>
 
     <script>
-      const totalClubKits = window.clubs.length * 4;
-      const totalCountryKits = window.nationalTeams.length * 2;
-      const totalKits = totalClubKits + totalCountryKits;
-      const roundedKits = Math.floor(totalKits / 10) * 10;
-
-      document.getElementById("kitCount").textContent = `${roundedKits}+`;
+      document.getElementById("kitCount").textContent = "50+";
 
       document.getElementById("heroJ1").innerHTML = window.renderJerseyImage(
         "club",

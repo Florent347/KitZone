@@ -634,3 +634,53 @@ window.formatConvertedNumber = function (numberInSelectedCurrency) {
 
   return `${symbol}${numberInSelectedCurrency.toFixed(2)}`;
 };
+
+window.logoFiles = {
+  club: {
+    chelsea: "chelsea.webp",
+    real: "madrid.webp",
+    barca: "barcelona.png",
+    mancity: "city.webp",
+    liverpool: "liverpool.png",
+    bayern: "bayern.png",
+    psg: "psg.png",
+    juventus: "juventus.png",
+    inter: "inter.png",
+    dortmund: "dortmund.png",
+  },
+  country: {
+    portugal: "portugal.png",
+    argentina: "argentina.png",
+    brazil: "brazil.png",
+    france: "france.png",
+    england: "england.png",
+    germany: "germany.png",
+    spain: "spain.png",
+    switzerland: "swiss.png",
+    italy: "italy.png",
+    netherlands: "netherlands.png",
+  },
+};
+
+window.getLogoImage = function (kind, id) {
+  const file = window.logoFiles?.[kind]?.[id];
+
+  if (!file) return null;
+
+  return `assets/logos/${kind}/${file}`;
+};
+
+window.renderLogo = function (kind, id, altText) {
+  const src = window.getLogoImage(kind, id);
+
+  if (!src) {
+    const item = kind === "club" ? window.findClub(id) : window.findCountry(id);
+    return window.crestSVG(
+      item?.abbr || "?",
+      item?.c1 || "#111",
+      item?.c2 || "#000",
+    );
+  }
+
+  return `<img class="team-logo-img" src="${src}" alt="${altText || "Team logo"}">`;
+};

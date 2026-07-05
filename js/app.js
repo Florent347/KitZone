@@ -11,7 +11,8 @@ function renderHeader(active) {
     <div class="container">
       <nav class="nav">
         <a href="index.html" class="logo">
-          <span class="dot"></span> Kit<span class="gold">Zone</span>
+          <span class="dot"></span>
+    <span class="logo-text">Kit<span class="gold">Zone</span></span>
         </a>
 
         <div class="nav-links" id="navLinks">
