@@ -330,28 +330,14 @@ window.getJerseyImage = function (kind, id, season, type) {
       return null;
     }
 
-    const fileBase = `${team}-${typeCode}-${year}`;
-
-    const customExtensions = {
-      "city-h-2026": "avif",
-      "dortmund-3-2025": "avif",
-      "liverpool-h-2026": "jpg",
-    };
-
-    const ext = customExtensions[fileBase] || "webp";
-
-    return `assets/jerseys/club/${fileBase}.${ext}`;
+    const fileBase = `${team}-${typeCode}-${year}_no_bg`;
+    return `assets/jerseys/club/${fileBase}.png`;
   }
 
   if (kind === "country") {
     const team = window.countryImageIds[id];
-    const fileBase = `${team}-${typeCode}-2026`;
-
-    const customExtensions = {};
-
-    const ext = customExtensions[fileBase] || "webp";
-
-    return `assets/jerseys/country/${fileBase}.${ext}`;
+    const fileBase = `${team}-${typeCode}-2026_no_bg`;
+    return `assets/jerseys/country/${fileBase}.png`;
   }
 
   return null;
