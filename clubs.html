@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Clubs — KitZone</title>
+<meta name="description" content="Browse football clubs and shop their official jerseys across every season."/>
+<link rel="stylesheet" href="css/style.css"/>
+</head>
+<body data-page="clubs">
+<header class="header" data-header></header>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="eyebrow">Clubs</div>
+    <h1>Choose your club</h1>
+    <p>Ten of the world's biggest football clubs. Every season kit, from 2009/10 to 2026/27.</p>
+    <div class="filter-bar">
+      <div class="relative">
+        <input type="text" id="clubSearch" placeholder="Search clubs…" autocomplete="off"/>
+        <div class="search-suggestions" id="clubSuggest"></div>
+      </div>
+      <select id="leagueFilter">
+        <option value="">All leagues</option>
+        <option>Premier League</option>
+        <option>La Liga</option>
+        <option>Bundesliga</option>
+        <option>Serie A</option>
+        <option>Ligue 1</option>
+      </select>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="grid-cards" id="clubsGrid"></div>
+  </div>
+</section>
+
+<footer class="footer" data-footer></footer>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script>
+  const grid = document.getElementById('clubsGrid');
+  const search = document.getElementById('clubSearch');
+  const leagueSel = document.getElementById('leagueFilter');
+  const suggest = document.getElementById('clubSuggest');
+
+  // Prefill from ?league=
+  const pre = window.qp('league');
+  if (pre) leagueSel.value = pre;
+
+  function render() {
+    const q = search.value.trim().toLowerCase();
+    const lg = leagueSel.value;
+    const list = window.clubs.filter(c =>
+      (!q || c.name.toLowerCase().includes(q)) &&
+      (!lg || c.league === lg)
+    );
+    if (!list.length) { grid.innerHTML = `<div style="grid-column:1/-1;color:var(--muted);padding:40px 0">No clubs match your search.</div>`; return; }
+    grid.innerHTML = list.map(c => `
+      <a class="card reveal in" href="club.html?id=${c.id}">
+        <div class="crest">${window.crestSVG(c.abbr, c.c1, c.c2)}</div>
+        <h3>${c.name}</h3>
+        <div class="meta">${c.league}</div>
+        <div class="link">Browse Jerseys →</div>
+      </a>
+    `).join('');
+  }
+
+  function renderSuggest() {
+    const q = search.value.trim().toLowerCase();
+    if (!q) { suggest.classList.remove('show'); return; }
+    const list = window.clubs.filter(c => c.name.toLowerCase().includes(q)).slice(0,5);
+    if (!list.length) { suggest.classList.remove('show'); return; }
+    suggest.innerHTML = list.map(c => `<a href="club.html?id=${c.id}"><span>${c.name}</span><span class="badge">${c.league}</span></a>`).join('');
+    suggest.classList.add('show');
+  }
+
+  search.addEventListener('input', () => { render(); renderSuggest(); });
+  leagueSel.addEventListener('change', render);
+  document.addEventListener('click', e => { if (!search.parentElement.contains(e.target)) suggest.classList.remove('show'); });
+  render();
+</script>
+</body>
+</html>

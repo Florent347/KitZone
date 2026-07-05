@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Country — KitZone</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body data-page="nt">
+    <header class="header" data-header></header>
+
+    <section class="section">
+      <div class="container">
+        <a href="nationalteams.html" class="back-link"
+          >← Back to National Teams</a
+        >
+        <div id="ctryHead"></div>
+
+        <div class="jersey-table reveal in">
+          <div
+            class="jersey-table-head"
+            style="grid-template-columns: 130px 1fr 1fr"
+          >
+            <div>Year</div>
+            <div>Home</div>
+            <div>Away</div>
+          </div>
+          <div id="yearRows"></div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer" data-footer></footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+      const id = window.qp("id") || "portugal";
+      const country = window.findCountry(id);
+      if (!country) location.href = "nationalteams.html";
+
+      document.title = `${country.name} — KitZone`;
+
+      document.getElementById("ctryHead").innerHTML = `
+    <div class="season-header">
+      <div class="crest-lg">${window.crestSVG(country.abbr, country.c1, country.c2)}</div>
+      <div>
+        <h1>${country.name}</h1>
+        <div class="meta">${country.continent} · National Team</div>
+      </div>
+    </div>
+  `;
+
+      const shownYears = [2026];
+
+      document.getElementById("yearRows").innerHTML = shownYears
+        .map((y) => {
+          const price = window.priceForYear(y);
+
+          const cell = (type) => `
+      <a class="jersey-cell" href="${window.jerseyUrl("country", country.id, String(y), type)}">
+        <div class="thumb">
+          ${window.renderJerseyImage("country", country.id, String(y), type, `${country.name} ${type} ${y}`)}
+        </div>
+        <div class="label">${type}</div>
+        <div class="price">CHF ${price}.90</div>
+      </a>
+    `;
+
+          return `
+      <div class="jersey-table-row" style="grid-template-columns:130px 1fr 1fr;">
+        <div class="season-label">${y}</div>
+        ${cell("Home")}
+        ${cell("Away")}
+      </div>
+    `;
+        })
+        .join("");
+    </script>
+  </body>
+</html>

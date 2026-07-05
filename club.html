@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Club — KitZone</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body data-page="clubs">
+    <header class="header" data-header></header>
+
+    <section class="section">
+      <div class="container">
+        <a href="clubs.html" class="back-link">← Back to Clubs</a>
+        <div id="clubHead"></div>
+
+        <div class="jersey-table reveal in">
+          <div class="jersey-table-head">
+            <div>Season</div>
+            <div>Home</div>
+            <div>Away</div>
+            <div>Third</div>
+          </div>
+          <div id="seasonRows"></div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer" data-footer></footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+      const id = window.qp("id") || "chelsea";
+      const club = window.findClub(id);
+      if (!club) location.href = "clubs.html";
+
+      document.title = `${club.name} — KitZone`;
+
+      document.getElementById("clubHead").innerHTML = `
+    <div class="season-header">
+      <div class="crest-lg">${window.crestSVG(club.abbr, club.c1, club.c2)}</div>
+      <div>
+        <h1>${club.name}</h1>
+        <div class="meta">${club.league} · Latest kits available</div>
+      </div>
+    </div>
+  `;
+
+      const shownSeasons = ["2026/27", "2025/26"];
+
+      document.getElementById("seasonRows").innerHTML = shownSeasons
+        .map((s) => {
+          const yearNum = parseInt(s);
+          const price = window.priceForYear(yearNum);
+
+          const cell = (type) => {
+            const imagePath = window.getJerseyImage("club", club.id, s, type);
+            const isComingSoon = !imagePath;
+
+            return `
+        <a class="jersey-cell ${isComingSoon ? "disabled-link" : ""}" 
+           href="${isComingSoon ? "#" : window.jerseyUrl("club", club.id, s, type)}"
+           ${isComingSoon ? 'onclick="return false;"' : ""}>
+          <div class="thumb">
+            ${window.renderJerseyImage("club", club.id, s, type, `${club.name} ${type} ${s}`)}
+          </div>
+          <div class="label">${type}</div>
+          <div class="price">${isComingSoon ? "Coming Soon" : `CHF ${price}.90`}</div>
+        </a>
+      `;
+          };
+
+          return `
+      <div class="jersey-table-row">
+        <div class="season-label">${s}</div>
+        ${cell("Home")}
+        ${cell("Away")}
+        ${cell("Third")}
+      </div>
+    `;
+        })
+        .join("");
+    </script>
+  </body>
+</html>

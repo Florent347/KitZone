@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>KitZone — Find your kit. Own the season.</title>
+<meta name="description" content="Premium football jerseys from every club and national team. Every season, every kit."/>
+<link rel="stylesheet" href="css/style.css"/>
+</head>
+<body data-page="home">
+<header class="header" data-header></header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="reveal">
+      <div class="eyebrow">Season 2026 / 27</div>
+      <h1>Find your kit. Own the season.</h1>
+      <p class="lead">Premium football jerseys — every club, every national team, every season back to 2009. Made for fans who don't compromise.</p>
+      <div class="hero-actions">
+        <a href="clubs.html" class="btn btn-primary btn-lg">Shop Clubs →</a>
+        <a href="nationalteams.html" class="btn btn-ghost btn-lg">Shop National Teams</a>
+      </div>
+      <div class="hero-stats">
+        <div><strong>200+</strong><span>Official kits</span></div>
+        <div><strong>18</strong><span>Seasons archive</span></div>
+        <div><strong>10</strong><span>Top clubs</span></div>
+      </div>
+    </div>
+    <div class="hero-visual reveal">
+      <div class="hero-tile">
+        <span class="badge gold">New 26/27</span>
+        <div class="jersey" id="heroJ1"></div>
+        <div class="jersey-caption"><strong>Real Madrid</strong><span>Home · 26/27</span></div>
+      </div>
+      <div class="hero-tile">
+        <span class="badge">Trending</span>
+        <div class="jersey" id="heroJ2"></div>
+        <div class="jersey-caption"><strong>Barcelona</strong><span>Home</span></div>
+      </div>
+      <div class="hero-tile">
+        <span class="badge">National</span>
+        <div class="jersey" id="heroJ3"></div>
+        <div class="jersey-caption"><strong>Argentina</strong><span>2024</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Trending -->
+<section class="section" id="trending">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">Trending Now</div>
+        <h2>Fan favourites this week</h2>
+      </div>
+      <a href="clubs.html" class="btn btn-ghost">View all</a>
+    </div>
+    <div class="product-grid" id="trendingGrid"></div>
+  </div>
+</section>
+
+<!-- New Arrivals -->
+<section class="section" id="new" style="padding-top:0">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">Season 26 / 27</div>
+        <h2>New arrivals</h2>
+      </div>
+      <a href="clubs.html" class="btn btn-ghost">Explore</a>
+    </div>
+    <div class="product-grid" id="newGrid"></div>
+  </div>
+</section>
+
+<!-- Leagues -->
+<section class="section" style="padding-top:0">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">By competition</div>
+        <h2>Browse by league</h2>
+      </div>
+    </div>
+    <div class="grid-cards reveal" id="leagueGrid"></div>
+  </div>
+</section>
+
+<!-- National -->
+<section class="section" style="padding-top:0">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">Nations</div>
+        <h2>Browse national teams</h2>
+      </div>
+      <a href="nationalteams.html" class="btn btn-ghost">All teams →</a>
+    </div>
+    <div class="grid-cards reveal" id="ntPreview"></div>
+  </div>
+</section>
+
+<!-- Newsletter -->
+<section class="section" style="padding-top:0">
+  <div class="container reveal">
+    <div class="newsletter">
+      <div class="eyebrow" style="color:var(--gold)">Newsletter</div>
+      <h2>Kit drops, straight to your inbox.</h2>
+      <p>Be first to know when new kits launch. No spam — only the good stuff.</p>
+      <form id="newsForm" novalidate>
+        <input type="email" placeholder="your@email.com" id="newsEmail" required/>
+        <button type="submit" class="btn btn-gold">Subscribe</button>
+      </form>
+      <div class="msg" id="newsMsg"></div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer" data-footer></footer>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script>
+  // Hero jerseys
+  document.getElementById('heroJ1').innerHTML = window.jerseySVG('#ffffff','#e5e9f0','#F5C542');
+  document.getElementById('heroJ2').innerHTML = window.jerseySVG('#a50044','#004d98','#ffcb05');
+  document.getElementById('heroJ3').innerHTML = window.jerseySVG('#74acdf','#ffffff','#F5C542');
+
+  // Trending
+  const trending = [
+    { kind:'club', id:'real',     season:'2026/27', type:'Home', label:'Real Madrid' },
+    { kind:'club', id:'barca',    season:'2026/27', type:'Home', label:'Barcelona' },
+    { kind:'club', id:'liverpool',season:'2026/27', type:'Home', label:'Liverpool' },
+    { kind:'club', id:'psg',      season:'2025/26', type:'Home', label:'Paris SG' },
+    { kind:'nt',   id:'argentina',season:'2024',    type:'Home', label:'Argentina' },
+    { kind:'nt',   id:'portugal', season:'2024',    type:'Home', label:'Portugal' },
+    { kind:'nt',   id:'brazil',   season:'2022',    type:'Home', label:'Brazil' },
+    { kind:'club', id:'bayern',   season:'2026/27', type:'Home', label:'Bayern' },
+  ];
+  document.getElementById('trendingGrid').innerHTML = trending.map(t => {
+    const src = t.kind==='club' ? window.findClub(t.id) : window.findCountry(t.id);
+    const [a,b,c] = src.jersey;
+    const price = window.priceForYear(parseInt(t.season));
+    return `<a class="product-card reveal" href="${window.jerseyUrl(t.kind,t.id,t.season,t.type)}">
+      <div class="img"><span class="tag ${Math.random()>.5?'blue':''}">${Math.random()>.5?'Hot':'New'}</span>${window.jerseySVG(a,b,c)}</div>
+      <div class="info">
+        <h4>${src.name}</h4>
+        <div class="sub">${t.type} · ${t.season}</div>
+        <div class="row"><span class="price">$${price}</span><span style="color:var(--muted);font-size:.85rem">${t.kind==='club'?src.league:src.continent}</span></div>
+      </div>
+    </a>`;
+  }).join('');
+
+  // New arrivals — 26/27 club home kits
+  document.getElementById('newGrid').innerHTML = window.clubs.slice(0,8).map(c => {
+    const [a,b,cc] = c.jersey;
+    return `<a class="product-card reveal" href="${window.jerseyUrl('club',c.id,'2026/27','Home')}">
+      <div class="img"><span class="tag">New 26/27</span>${window.jerseySVG(a,b,cc)}</div>
+      <div class="info">
+        <h4>${c.name}</h4>
+        <div class="sub">Home Kit · 2026/27</div>
+        <div class="row"><span class="price">$99</span><span style="color:var(--muted);font-size:.85rem">${c.league}</span></div>
+      </div>
+    </a>`;
+  }).join('');
+
+  // Leagues
+  const leagues = [
+    { name:'Premier League', country:'England',  c1:'#3d0053', c2:'#38003c' },
+    { name:'La Liga',        country:'Spain',    c1:'#ee8707', c2:'#c26900' },
+    { name:'Bundesliga',     country:'Germany',  c1:'#d20515', c2:'#8a0018' },
+    { name:'Serie A',        country:'Italy',    c1:'#008fd7', c2:'#00507d' },
+    { name:'Ligue 1',        country:'France',   c1:'#091c3e', c2:'#031029' },
+  ];
+  document.getElementById('leagueGrid').innerHTML = leagues.map(l =>
+    `<a class="card" href="clubs.html?league=${encodeURIComponent(l.name)}">
+      <div class="crest">${window.crestSVG(l.name.split(' ').map(s=>s[0]).join('').slice(0,2), l.c1, l.c2)}</div>
+      <h3>${l.name}</h3>
+      <div class="meta">${l.country}</div>
+      <div class="link">Explore clubs →</div>
+    </a>`
+  ).join('');
+
+  // National preview
+  document.getElementById('ntPreview').innerHTML = window.nationalTeams.slice(0,5).map(n =>
+    `<a class="card" href="country.html?id=${n.id}">
+      <div class="crest">${window.crestSVG(n.abbr, n.c1, n.c2)}</div>
+      <h3>${n.name}</h3>
+      <div class="meta">${n.continent}</div>
+      <div class="link">Browse jerseys →</div>
+    </a>`
+  ).join('');
+
+  // Newsletter
+  document.getElementById('newsForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const email = document.getElementById('newsEmail').value.trim();
+    const msg = document.getElementById('newsMsg');
+    const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if (!ok) { msg.textContent = 'Please enter a valid email.'; msg.className='msg err'; return; }
+    msg.textContent = 'You\'re in. Welcome to KitZone.'; msg.className='msg ok';
+    e.target.reset();
+  });
+
+  // Re-init observers for dynamically inserted .reveal cards
+  document.querySelectorAll('.reveal').forEach(el => {
+    const io = new IntersectionObserver(entries => entries.forEach(e => e.isIntersecting && (e.target.classList.add('in'), io.disconnect())), { threshold: .1 });
+    io.observe(el);
+  });
+</script>
+</body>
+</html>

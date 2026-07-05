@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Account — KitZone</title>
+<link rel="stylesheet" href="css/style.css"/>
+</head>
+<body data-page="account">
+<header class="header" data-header></header>
+
+<section class="container">
+  <div id="accountPanel"></div>
+</section>
+
+<footer class="footer" data-footer></footer>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script>
+  const panel = document.getElementById('accountPanel');
+
+  function getUsers() { try { return JSON.parse(localStorage.getItem('kz_users')||'[]'); } catch { return []; } }
+  function saveUsers(u) { localStorage.setItem('kz_users', JSON.stringify(u)); }
+  function getCurrent() { try { return JSON.parse(localStorage.getItem('kz_user')||'null'); } catch { return null; } }
+  function setCurrent(u) { if (u) localStorage.setItem('kz_user', JSON.stringify(u)); else localStorage.removeItem('kz_user'); }
+
+  function renderAuth(tab = 'login') {
+    panel.innerHTML = `
+      <div class="form-panel">
+        <div class="eyebrow">Account</div>
+        <h2>Welcome to KitZone</h2>
+        <p>Sign in or create an account to save your kits.</p>
+        <div class="form-tabs">
+          <button id="tabLogin" class="${tab==='login'?'active':''}">Sign in</button>
+          <button id="tabSignup" class="${tab==='signup'?'active':''}">Register</button>
+        </div>
+        <div id="formHolder"></div>
+      </div>
+    `;
+    document.getElementById('tabLogin').onclick = () => renderAuth('login');
+    document.getElementById('tabSignup').onclick = () => renderAuth('signup');
+    document.getElementById('formHolder').innerHTML = tab === 'login' ? loginForm() : signupForm();
+    wireForm(tab);
+  }
+
+  function loginForm() {
+    return `
+      <form id="authForm" novalidate>
+        <div class="form-group"><label>Email</label><input type="email" id="email"/><div class="err" data-for="email"></div></div>
+        <div class="form-group"><label>Password</label><input type="password" id="password"/><div class="err" data-for="password"></div></div>
+        <button class="btn btn-primary" type="submit">Sign in</button>
+      </form>
+    `;
+  }
+  function signupForm() {
+    return `
+      <form id="authForm" novalidate>
+        <div class="form-group"><label>Name</label><input type="text" id="name"/><div class="err" data-for="name"></div></div>
+        <div class="form-group"><label>Email</label><input type="email" id="email"/><div class="err" data-for="email"></div></div>
+        <div class="form-group"><label>Password</label><input type="password" id="password"/><div class="err" data-for="password"></div></div>
+        <button class="btn btn-primary" type="submit">Create account</button>
+      </form>
+    `;
+  }
+  function err(id, msg) { const el = document.querySelector(`[data-for="${id}"]`); if (el) el.textContent = msg||''; }
+
+  function wireForm(tab) {
+    document.getElementById('authForm').addEventListener('submit', e => {
+      e.preventDefault();
+      ['name','email','password'].forEach(k => err(k,''));
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return err('email','Invalid email.');
+      if (password.length < 6) return err('password','Min 6 characters.');
+      const users = getUsers();
+      if (tab === 'signup') {
+        const name = document.getElementById('name').value.trim();
+        if (name.length < 2) return err('name','Enter your name.');
+        if (users.find(u => u.email === email)) return err('email','Email already registered.');
+        const user = { name, email, password };
+        users.push(user); saveUsers(users); setCurrent(user); render();
+      } else {
+        const u = users.find(u => u.email === email && u.password === password);
+        if (!u) return err('password','Invalid credentials.');
+        setCurrent(u); render();
+      }
+    });
+  }
+
+  function renderProfile(user) {
+    panel.innerHTML = `
+      <div class="form-panel">
+        <div class="profile-card">
+          <div class="avatar">${user.name.charAt(0).toUpperCase()}</div>
+          <div>
+            <h3>Hallo, ${user.name}</h3>
+            <p>${user.email}</p>
+          </div>
+          <button class="btn btn-ghost" id="logoutBtn">Logout</button>
+        </div>
+        <h3 style="margin-bottom:14px">Profile settings</h3>
+        <form id="profileForm">
+          <div class="form-group"><label>Name</label><input type="text" id="pName" value="${user.name}"/></div>
+          <div class="form-group"><label>Email</label><input type="email" id="pEmail" value="${user.email}"/></div>
+          <div class="form-group"><label>New password (optional)</label><input type="password" id="pPass" placeholder="Leave blank to keep current"/></div>
+          <button class="btn btn-primary" type="submit">Save changes</button>
+          <div class="err" id="profileMsg" style="text-align:center;margin-top:10px"></div>
+        </form>
+      </div>
+    `;
+    document.getElementById('logoutBtn').onclick = () => { setCurrent(null); render(); };
+    document.getElementById('profileForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const name = document.getElementById('pName').value.trim();
+      const email = document.getElementById('pEmail').value.trim();
+      const pass = document.getElementById('pPass').value;
+      const msg = document.getElementById('profileMsg');
+      if (name.length < 2 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { msg.textContent='Check your inputs.'; msg.style.color='#ff9b9b'; return; }
+      const users = getUsers();
+      const idx = users.findIndex(u => u.email === user.email);
+      if (idx < 0) return;
+      users[idx].name = name; users[idx].email = email;
+      if (pass && pass.length >= 6) users[idx].password = pass;
+      saveUsers(users); setCurrent(users[idx]);
+      msg.textContent='Saved.'; msg.style.color='#7ee2b8';
+      setTimeout(render, 700);
+    });
+  }
+
+  function render() {
+    const u = getCurrent();
+    if (u) renderProfile(u); else renderAuth('login');
+  }
+  render();
+</script>
+</body>
+</html>

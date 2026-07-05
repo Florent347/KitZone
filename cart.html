@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Cart — KitZone</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body data-page="cart">
+    <header class="header" data-header></header>
+
+    <section class="container">
+      <div style="padding: 40px 0 10px">
+        <div class="eyebrow">Your bag</div>
+        <h1 style="font-size: 2rem; font-weight: 900; letter-spacing: -0.02em">
+          Shopping cart
+        </h1>
+      </div>
+
+      <div id="cartWrap"></div>
+    </section>
+
+    <footer class="footer" data-footer></footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+      const wrap = document.getElementById("cartWrap");
+
+      function render() {
+        let cart = getCart();
+
+        if (!cart.length) {
+          wrap.innerHTML = `
+        <div class="empty-cart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M6 6h15l-1.5 9h-13z"/>
+            <circle cx="9" cy="20" r="1.5"/>
+            <circle cx="18" cy="20" r="1.5"/>
+            <path d="M6 6L5 3H2"/>
+          </svg>
+          <h2 style="font-size:1.4rem;margin-bottom:10px">Your cart is empty</h2>
+          <p style="color:var(--muted);margin-bottom:24px">Time to find your kit.</p>
+          <a href="clubs.html" class="btn btn-primary">Shop Clubs</a>
+        </div>
+      `;
+          return;
+        }
+
+        const subtotal = cart.reduce((s, i) => s + i.price * (i.qty || 1), 0);
+        const shipping = subtotal > 150 ? 0 : 9.9;
+        const total = subtotal + shipping;
+
+        wrap.innerHTML = `
+      <div class="cart-layout">
+        <div class="cart-items">
+          ${cart
+            .map(
+              (i, idx) => `
+            <div class="cart-item">
+              <div class="img">
+                <img class="real-jersey-img" src="${i.image}" alt="${i.teamName} ${i.type}">
+              </div>
+
+              <div>
+                <h4>${i.teamName} — ${i.type}</h4>
+                <div class="sub">${i.kind === "club" ? "Season" : "Year"} ${i.season}</div>
+
+                <div class="details">
+                  <span>Size ${i.size}</span>
+                  ${i.perso ? `<span>${i.perso.name} #${i.perso.number}</span>` : `<span>No personalisation</span>`}
+                </div>
+              </div>
+
+              <div class="right">
+                <div class="qty">
+                  <button data-act="dec" data-idx="${idx}">−</button>
+                  <span>${i.qty || 1}</span>
+                  <button data-act="inc" data-idx="${idx}">+</button>
+                </div>
+
+                <div style="font-weight:800;color:var(--gold)">
+                  CHF ${(i.price * (i.qty || 1)).toFixed(2)}
+                </div>
+
+                <button class="remove" data-act="rm" data-idx="${idx}">Remove</button>
+              </div>
+            </div>
+          `,
+            )
+            .join("")}
+        </div>
+
+        <div class="cart-summary">
+          <h3>Order summary</h3>
+          <div class="summary-row"><span>Subtotal</span><span>CHF ${subtotal.toFixed(2)}</span></div>
+          <div class="summary-row"><span>Shipping</span><span>${shipping ? `CHF ${shipping.toFixed(2)}` : "Free"}</span></div>
+          <div class="summary-row total"><span>Total</span><span>CHF ${total.toFixed(2)}</span></div>
+
+          <button class="btn btn-gold" style="width:100%;margin-top:20px" onclick="alert('This is a demo checkout — thanks for trying KitZone!')">
+            Checkout
+          </button>
+
+          <p style="color:var(--muted);font-size:.8rem;text-align:center;margin-top:12px">
+            Free shipping over CHF 150 · 30-day returns
+          </p>
+        </div>
+      </div>
+    `;
+
+        wrap.querySelectorAll("[data-act]").forEach((b) => {
+          b.addEventListener("click", () => {
+            const idx = +b.dataset.idx;
+            let c = getCart();
+
+            if (b.dataset.act === "inc") c[idx].qty = (c[idx].qty || 1) + 1;
+            if (b.dataset.act === "dec")
+              c[idx].qty = Math.max(1, (c[idx].qty || 1) - 1);
+            if (b.dataset.act === "rm") c.splice(idx, 1);
+
+            saveCart(c);
+            render();
+          });
+        });
+      }
+
+      render();
+    </script>
+  </body>
+</html>
