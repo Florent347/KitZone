@@ -77,12 +77,25 @@
         <div class="product-gallery">
           <div class="product-main-img" id="mainImg"><img class="real-jersey-img" src="${imagePath}" alt="${src.name} ${type} ${season}" /></div>
           <div class="product-thumbs">
-            <div class="product-thumb active">
-              <img class="real-jersey-img"
-                src="${imagePath}"
-                alt="${src.name} ${type} ${season}">
-          </div>
-      </div>
+  <div class="product-thumb active" id="imageThumb">
+    <img class="real-jersey-img"
+      src="${imagePath}"
+      alt="${src.name} ${type} ${season}">
+  </div>
+
+  ${
+    kind === "club" &&
+    id === "chelsea" &&
+    season === "2025/26" &&
+    type === "Third"
+      ? `<div class="product-thumb video" id="videoThumb">
+  <img
+    src="https://img.youtube.com/vi/RuBwCH8Ejwk/hqdefault.jpg"
+    alt="Chelsea Third Kit Video">
+</div>`
+      : ""
+  }
+</div>
         </div>
         <div class="product-info">
         <div class="product-title-row">
@@ -129,6 +142,30 @@
               .getElementById("persoFields")
               .classList.toggle("show", event.target.value === "custom");
           });
+        });
+
+        const main = document.getElementById("mainImg");
+
+        document.getElementById("imageThumb")?.addEventListener("click", () => {
+          main.innerHTML = `
+    <img class="real-jersey-img"
+         src="${imagePath}"
+         alt="${src.name} ${type} ${season}">
+  `;
+        });
+
+        document.getElementById("videoThumb")?.addEventListener("click", () => {
+          main.innerHTML = `
+    <iframe
+      width="100%"
+      height="100%"
+      src="https://www.youtube.com/embed/RuBwCH8Ejwk"
+      title="Chelsea Third Kit Video"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen>
+    </iframe>
+  `;
         });
 
         document.getElementById("addBtn").addEventListener("click", () => {
