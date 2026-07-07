@@ -2,30 +2,42 @@
 
 ## Ziel
 
-Vor dem Programmieren wurde ein Wireframe erstellt, um die Struktur des Webshops zu planen.
+Vor Beginn der Programmierung wurde ein Wireframe erstellt, um den grundsätzlichen Aufbau des Webshops zu planen.
 
-Das Wireframe wurde mithilfe von KI erstellt und anschliessend an das endgültige Design von KitZone angepasst.
+Das Wireframe wurde mithilfe von KI erstellt und diente als Grundlage für die Entwicklung von KitZone. Während der Umsetzung wurden einzelne Bereiche angepasst und erweitert, sodass das endgültige Design vom ursprünglichen Wireframe leicht abweicht.
 
-Es dient ausschliesslich als Layoutplanung und zeigt die Position der wichtigsten Elemente.
+Das Wireframe dient ausschliesslich der Layoutplanung und zeigt die Position der wichtigsten Elemente der Website.
 
-## Enthaltene Seitenbereiche
+---
+
+# Enthaltene Seitenbereiche
+
+Das Wireframe umfasst folgende Bereiche:
 
 - Header mit Navigation
 - Suchleiste
 - Hero-Bereich
-- Kategorien
+- Produktkategorien
 - Produktübersicht
-- Newsletter
+- Newsletter-Bereich
 - Footer
 
-## Responsive Varianten
+---
 
-Es wurden drei Bildschirmgrössen geplant:
+# Responsive Varianten
 
-- Mobile (375px)
-- Tablet (768px)
-- Desktop (1440px)
+Für die Planung wurden drei verschiedene Bildschirmgrössen berücksichtigt:
 
-## Wireframe
+- Mobile (375 px)
+- Tablet (768 px)
+- Desktop (1440 px)
+
+Dadurch konnte sichergestellt werden, dass die Website auf verschiedenen Geräten sinnvoll aufgebaut ist.
+
+---
+
+# Wireframe
+
+Nachfolgend ist das erstellte Wireframe dargestellt:
 
 ![Wireframe](img/wireframe-img.png)

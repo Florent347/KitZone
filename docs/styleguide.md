@@ -2,35 +2,35 @@
 
 ## Projekt
 
-KitZone
+**KitZone**
 
-Ein moderner Webshop für offizielle Fussballtrikots von Vereinen und Nationalteams.
+KitZone ist ein moderner Webshop für offizielle Fussballtrikots von Vereinen und Nationalteams. Das Design orientiert sich an einem dunklen, modernen Erscheinungsbild mit klaren Farben und einer einfachen Benutzerführung.
 
 ---
 
-# Farben
+# Farbpalette
 
-| Farbe   | Verwendung         |
-| ------- | ------------------ |
-| #0B1220 | Hintergrund        |
-| #1A2335 | Karten             |
-| #2E66F5 | Primäre Buttons    |
-| #FFC83D | Preise, Highlights |
-| #FFFFFF | Haupttext          |
-| #91A4C3 | Sekundärer Text    |
-| #283349 | Rahmen             |
+| Farbe      | Hex-Code  | Verwendung            |
+| ---------- | --------- | --------------------- |
+| Dunkelblau | `#0B1220` | Hintergrund           |
+| Dunkelgrau | `#1A2335` | Karten und Container  |
+| Blau       | `#2E66F5` | Primäre Buttons       |
+| Gold       | `#FFC83D` | Preise und Highlights |
+| Weiss      | `#FFFFFF` | Haupttext             |
+| Hellgrau   | `#91A4C3` | Sekundärer Text       |
+| Grau       | `#283349` | Rahmen und Linien     |
 
 ---
 
 # Typografie
 
-## Schrift
+## Schriftart
 
-Inter
+- Inter
 
 ## Überschriften
 
-- Bold
+- Fett (Bold)
 - Gross
 - Weiss
 
@@ -38,48 +38,65 @@ Inter
 
 - Regular
 - Hellgrau
+- Gut lesbar
 
 ---
 
 # Buttons
 
-Primär
+## Primäre Buttons
 
-- Blau
+- Blaue Hintergrundfarbe
 - Weisse Schrift
 - Hover-Effekt
 
-Sekundär
+## Sekundäre Buttons
 
 - Dunkler Hintergrund
-- Heller Rand
+- Heller Rahmen
+- Hover-Effekt
 
 ---
 
 # Karten
 
 - Dunkler Hintergrund
-- Runde Ecken
-- Schatten
+- Abgerundete Ecken
+- Leichter Schatten
 - Hover-Animation
 
 ---
 
-# Icons
+# Icons und Logos
 
-- Lucide Icons
-- Minimalistischer Stil
+- Offizielle Vereins- und Nationalteamlogos
+- Einheitliche Darstellung
+- Minimalistisches Design
 
 ---
 
 # Layout
 
-Responsive Design
+Die Website wurde responsiv entwickelt und passt sich verschiedenen Bildschirmgrössen an.
 
-Breakpoints
+## Breakpoints
 
 - Mobile
 - Tablet
 - Desktop
 
-Grid-System für Produktübersichten
+## Layout
+
+- CSS Grid für Produktübersichten
+- Flexbox für Navigation und kleinere Bereiche
+- Einheitliche Abstände und Ausrichtung
+
+---
+
+# Designprinzipien
+
+- Modernes und übersichtliches Design
+- Einfache Navigation
+- Gute Lesbarkeit
+- Konsistente Farben und Abstände
+- Fokus auf die Produktdarstellung

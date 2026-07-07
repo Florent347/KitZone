@@ -1,66 +1,66 @@
 # Vergleich der KI-Tools
 
-## Verwendete Tools
+## Verwendete KI-Tools
 
-- ChatGPT
-- Lovable
+Für dieses Projekt wurden die beiden KI-Tools ChatGPT und Lovable verwendet. Beide unterstützten die Entwicklung auf unterschiedliche Weise.
 
 ---
 
-| Kriterium        | ChatGPT    | Lovable    |
-| ---------------- | ---------- | ---------- |
-| Code generieren  | ⭐⭐⭐⭐⭐ | ⭐⭐⭐     |
-| Fehler beheben   | ⭐⭐⭐⭐⭐ | ⭐⭐       |
-| HTML             | ⭐⭐⭐⭐⭐ | ⭐⭐⭐     |
-| CSS              | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐   |
-| JavaScript       | ⭐⭐⭐⭐⭐ | ⭐⭐       |
-| UI-Ideen         | ⭐⭐⭐⭐   | ⭐⭐⭐⭐⭐ |
-| Designvorschläge | ⭐⭐⭐⭐   | ⭐⭐⭐⭐⭐ |
-| Erklärungen      | ⭐⭐⭐⭐⭐ | ⭐⭐       |
-| Dokumentation    | ⭐⭐⭐⭐⭐ | ⭐⭐       |
+## Vergleich
+
+| Kriterium        |  ChatGPT   |  Lovable   |
+| ---------------- | :--------: | :--------: |
+| Code generieren  | ⭐⭐⭐⭐⭐ |   ⭐⭐⭐   |
+| Fehler beheben   | ⭐⭐⭐⭐⭐ |    ⭐⭐    |
+| HTML             | ⭐⭐⭐⭐⭐ |   ⭐⭐⭐   |
+| CSS              | ⭐⭐⭐⭐⭐ |  ⭐⭐⭐⭐  |
+| JavaScript       | ⭐⭐⭐⭐⭐ |    ⭐⭐    |
+| UI-Ideen         |  ⭐⭐⭐⭐  | ⭐⭐⭐⭐⭐ |
+| Designvorschläge |  ⭐⭐⭐⭐  | ⭐⭐⭐⭐⭐ |
+| Erklärungen      | ⭐⭐⭐⭐⭐ |    ⭐⭐    |
+| Dokumentation    | ⭐⭐⭐⭐⭐ |    ⭐⭐    |
 
 ---
 
 # ChatGPT
 
-Vorteile
+## Vorteile
 
 - Sehr gute Erklärungen
-- Erstellt HTML, CSS und JavaScript
-- Hilft beim Debuggen
-- Unterstützt bei Dokumentation
-- Kann Layouts verbessern
-- Unterstützte bei der Erstellung des Wireframes
+- Erstellt HTML-, CSS- und JavaScript-Code
+- Hilft beim Debuggen von Fehlern
+- Unterstützt bei der Dokumentation
+- Liefert Verbesserungsvorschläge für Layout und Benutzeroberfläche
+- Half bei der Erstellung des Wireframes
 
-Nachteile
+## Nachteile
 
-- Design muss teilweise selbst angepasst werden.
+- Designvorschläge müssen teilweise selbst angepasst werden.
+- Ohne klare Anweisungen können Antworten zu allgemein ausfallen.
 
 ---
 
 # Lovable
 
-Vorteile
+## Vorteile
 
-- Moderne Designs
-- Gute UI-Vorschläge
-- Schöne Layoutideen
+- Moderne und ansprechende Designs
+- Gute UI- und Layoutvorschläge
 - Hilfreich für Inspiration
+- Schnelle Erstellung von Designideen
 
-Nachteile
+## Nachteile
 
 - Weniger geeignet für komplexes JavaScript
-- Erklärt den Code kaum
-- Weniger hilfreich bei Fehlern
+- Erklärt den generierten Code kaum
+- Weniger hilfreich beim Beheben von Fehlern
 
 ---
 
 # Persönliches Fazit
 
-Für dieses Projekt war ChatGPT das wichtigste Werkzeug.
-
-Es half sowohl beim Programmieren als auch beim Beheben von Fehlern und beim Erstellen der Dokumentation.
+Für dieses Projekt war ChatGPT das wichtigste KI-Tool. Es unterstützte mich beim Programmieren, beim Beheben von Fehlern sowie bei der Erstellung der Dokumentation und des Wireframes.
 
 Lovable eignete sich besonders gut für Designideen und moderne Benutzeroberflächen.
 
-Die Kombination beider KI-Tools führte zu einer schnelleren und effizienteren Entwicklung des Webshops.
+Die Kombination beider KI-Tools ermöglichte eine schnellere und effizientere Entwicklung des Webshops.
